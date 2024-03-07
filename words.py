@@ -1,3 +1,3 @@
 #IMPORTANT all words in CAPITAL
-words = ["WINNAAR"
+words = ["WINNAAR","TEST"
 ]

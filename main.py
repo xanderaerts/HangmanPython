@@ -158,8 +158,6 @@ word = random.choice(words)
 guessend =[]
 	
 
-
-
 while True:
 	FPS = 60 
 	clock = pygame.time.Clock()
