@@ -23,8 +23,6 @@ def draw_mainscreen():
 	text = MIDDEL_FONT.render(display_word,1,BLACK)
 	win.blit(text,(400,200))
 
-
-
 	#draw buttons
 	for letter in letters:
 		x, y, ltr, visable = letter
@@ -50,29 +48,12 @@ def draw_homescreen(): #drawing the homescreen
 
 		win.blit(game_gui,(WIDTH/2 - game_gui.get_width()/2, HEIGHT/2 - game_gui.get_height()/2))
 		pygame.display.update()
-	
-def homescreen(): #running the homescreen
-	FPS = 60 
-	clock = pygame.time.Clock()
-	run = True 
-	clock.tick(FPS)
-	while run:
-		draw_homescreen()
-		for event in pygame.event.get():
-			if event.type == pygame.QUIT:
-				run = False
-			if event.type == pygame.MOUSEBUTTONDOWN:
-				m_x, m_y = pygame.mouse.get_pos()
-				xx = WIDTH/2 - game_gui.get_width()/2
-				yy = HEIGHT/2 - game_gui.get_height()/2
-				if m_x >=  xx and m_x <= xx + game_gui.get_width() and m_y >= yy and m_y <= yy + game_gui.get_height():
-					main()
 			
 
 def display_message(message): #display win or lose
 		pygame.time.delay(1000)
 		win.fill(WHITE)
-		text = MIDDEL_FONT.render(message,1, BLACK)
+		text = LETTER_FONT.render(message,1, BLACK)
 		win.blit(text,(WIDTH/2 - text.get_width()/2, HEIGHT/2 - text.get_height()/2))
 		pygame.display.update()
 		pygame.time.delay(3000)
@@ -109,16 +90,16 @@ def main():
 			if letter not in guessend:
 				won = False
 				break
-
 		if won:
 			display_message("You won!")	
 			break			
 
 		if hangman_status == 6:
-			display_message("You lost... :-( The word was")
+			pygame.time.delay(3000)	
+			display_message(f"You lost... :-( The word was {word}")
 			break
 
-
+## start
 #set up display
 pygame.init()
 WIDTH, HEIGHT = 800, 500
@@ -155,6 +136,7 @@ game_gui = pygame.image.load("images/game_gui/play.png")
 #game variables
 hangman_status = 0 
 word = random.choice(words)
+print(word)
 guessend =[]
 	
 
