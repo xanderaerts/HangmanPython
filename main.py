@@ -6,7 +6,7 @@ from words import words
 import sys 
 
 #functions
-def draw_mainscreen():
+def draw_mainscreen(guessed):
 	win.fill(WHITE)
 
 	#title 
@@ -16,7 +16,7 @@ def draw_mainscreen():
 	#draw word 
 	display_word =""
 	for letter in word:
-		if letter in guessend:
+		if letter in guessed:
 			display_word += letter + " "
 		else:
 			display_word += "_ "
@@ -58,17 +58,18 @@ def display_message(message): #display win or lose
 		pygame.display.update()
 		pygame.time.delay(3000)
 
-def main():
+def main(guessed,word):
 #variables
 	global hangman_status
 	FPS = 60 
 	clock = pygame.time.Clock()
-	run = True 
+	run = True
+	hangman_status = 0 
 #running the game 
 	while run: 
 		clock.tick(FPS)
 
-		draw_mainscreen() #drawing the game/main screen
+		draw_mainscreen(guessed) #drawing the game/main screen
 
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
@@ -81,13 +82,13 @@ def main():
 						dis = math.sqrt((x - m_x)**2 + (y - m_y)**2)
 						if dis < RADIUS:
 							letter[3] = False
-							guessend.append(ltr)
+							guessed.append(ltr)
 							if ltr not in word:
 								hangman_status += 1
 
 		won = True
 		for letter in word:
-			if letter not in guessend:
+			if letter not in guessed:
 				won = False
 				break
 		if won:
@@ -98,6 +99,15 @@ def main():
 			pygame.time.delay(3000)	
 			display_message(f"You lost... :-( The word was {word}")
 			break
+
+
+def setupGame():
+	#game variables
+	word = random.choice(words)
+	print(word)
+	guessed =[]
+	return guessed, word 
+
 
 ## start
 #set up display
@@ -115,8 +125,8 @@ TITLE_FONT = pygame.font.SysFont('comicans',70)
 #button variables 
 RADIUS = 20
 GAP = 15
-letters = []
 A = 65
+letters = []
 startx = round((WIDTH - (RADIUS*2 + GAP) * 13)/2)
 starty = 400
 for i in range(26):
@@ -133,11 +143,7 @@ for i in range(7):
 game_gui = pygame.image.load("images/game_gui/play.png")
 
 
-#game variables
-hangman_status = 0 
-word = random.choice(words)
-print(word)
-guessend =[]
+
 	
 
 while True:
@@ -155,7 +161,8 @@ while True:
 				xx = WIDTH/2 - game_gui.get_width()/2
 				yy = HEIGHT/2 - game_gui.get_height()/2
 				if m_x >=  xx and m_x <= xx + game_gui.get_width() and m_y >= yy and m_y <= yy + game_gui.get_height():
-					main()	
+					guessed, word = setupGame()
+					main(guessed,word)	
 	break
 		
 pygame.quit()
